@@ -14,6 +14,7 @@ se envia un mensaje al respecto, en caso contrario envia otro mensaje avisando d
 # Por hacer
 - Analizar tambien archivos
 - Añadir opcion de poder borrar los mensajes y/o penalizar/avisar al usuario que ha pasado dicho enlace malicioso
+- Añadir comandos para analizar URLs
 - ???
 
 # Aviso

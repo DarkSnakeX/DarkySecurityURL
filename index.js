@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 const { Discord, EmbedBuilder, Client, GatewayIntentBits, Partials } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.DirectMessages, GatewayIntentBits.MessageContent ], partials: [Partials.Channel] });
-const apiKey = 'api-key-virustotal';
+const { token, apiKey } = require('./config.json');
 
 client.on('ready', () => {
   console.log(`DarkySecurityURL esta lista`);
@@ -17,6 +17,8 @@ client.on('messageCreate', async message => {
 
     if (scaneoresultado.esPeligrosa) {
       message.channel.send(`La URL "${url}" puede ser peligrosa, ten cuidado.`);
+      message.reply("Porfavor ten mas cuidado al enviar enlaces de este estilo");
+      //message.author.timeout(1000);
     } else {
       message.channel.send(`La URL "${url}" es segura (aparentemente).`);
     }

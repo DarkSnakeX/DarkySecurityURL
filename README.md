@@ -9,7 +9,7 @@ se envia un mensaje al respecto, en caso contrario envia otro mensaje avisando d
 # Requisitos
 - Tener una API valida de Virustotal
 - Tener un token valido de Discord para crear bots
-- Instalar la dependencia de node-fetch y discord.js (14.8.0 actualmente)
+- Instalar la dependencia de node-fetch(2.6.1) y discord.js(14.8.0)
 
 # Por hacer
 - Analizar tambien archivos

@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const FormData = require('form-data');
-const { Discord, EmbedBuilder, Client, GatewayIntentBits, Partials } = require('discord.js');
+const { Discord, EmbedBuilder, Client, GatewayIntentBits, Partials, Message } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.DirectMessages, GatewayIntentBits.MessageContent ], partials: [Partials.Channel] });
 const { token, apiKey } = require('./config.json');
 
@@ -20,32 +20,31 @@ client.on('messageCreate', async message => {
   }));
 
   for (const url of urls) {
-    await analyzeURL(url, message.channel);
+    await analyzeURL(url, message.channel, message);
   }
 
   for (const file of files) {
-    await analyzeFile(file, message.channel);
+    await analyzeFile(file, message.channel, message);
   }
 });
 
-async function analyzeURL(url, channel) {
+async function analyzeURL(url, channel, _message) {
   const scanResult = await scanURL(url);
 
   if (scanResult.esPeligrosa) {
-    channel.send(`La URL "${url}" puede ser peligrosa, ten cuidado.`);
-    channel.send("Por favor ten más cuidado al enviar enlaces de este estilo");
+    _message.reply(`La URL "${url}" puede ser peligrosa, ten cuidado.\nPor favor ten más cuidado al enviar enlaces de este estilo`);
   } else {
-    channel.send(`La URL "${url}" es segura (aparentemente).`);
+    _message.reply(`La URL "${url}" es segura (aparentemente).`);
   }
 }
 
-async function analyzeFile(file, channel) {
+async function analyzeFile(file, channel, _message) {
   const scanResult = await scanFile(file);
 
   if (scanResult.esPeligroso) {
-    channel.send(`El archivo "${file.name}" es peligroso, ten cuidado.`);
+    _message.reply(`El archivo "${file.name}" es peligroso, ten cuidado.`);
   } else {
-    channel.send(`El archivo "${file.name}" es seguro.`);
+    _message.reply(`El archivo "${file.name}" es seguro.`);
   }
 }
 

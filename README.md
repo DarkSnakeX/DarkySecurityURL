@@ -9,12 +9,10 @@ se envia un mensaje al respecto, en caso contrario envia otro mensaje avisando d
 # Requisitos
 - Tener una API valida de Virustotal
 - Tener un token valido de Discord para crear bots
-- Instalar la dependencia de node-fetch(2.6.1) y discord.js(14.8.0)
+- Instalar la dependencia de node-fetch(2.6.1), discord.js y form-data
 
 # Por hacer
-- Analizar tambien archivos
 - Añadir opcion de poder borrar los mensajes y/o penalizar/avisar al usuario que ha pasado dicho enlace malicioso
-- Añadir comandos para analizar URLs
 - ???
 
 # Aviso

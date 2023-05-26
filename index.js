@@ -1,6 +1,6 @@
 const { Discord, EmbedBuilder, Client, Collection, Events, GatewayIntentBits, Partials, Message } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.DirectMessages, GatewayIntentBits.MessageContent], partials: [Partials.Channel] });
-const { token } = require('./config.json');
+const { clientId, guildId, token } = require('./config.json');
 const analyzeURL = require('./functions/analyzeurl.js');
 const analyzeFile = require('./functions/analyzefile.js');
 const { addChannel, removeChannel, getChannels } = require('./database');
@@ -55,7 +55,7 @@ client.on('messageCreate', async message => {
   const channels = await getChannels();
 
   if (!channels.some(channel => channel.channel_id === channelId)) {
-    return; // Si el canal no está en la lista de canales permitidos, no analizar
+    return;
   }
 
   const urls = message.content.match(/(https?:\/\/[^\s]+)/g) || [];

@@ -15,13 +15,12 @@ async function createTable() {
   `);
 }
 
-// Llama a la función createTable para crear la tabla
 createTable()
   .then(() => {
-    console.log('Tabla "channels" creada correctamente');
+    console.log('Table "channels" created');
   })
   .catch(error => {
-    console.error('Error al crear la tabla "channels"', error);
+    console.error('Error creating table "channels"', error);
   });
 
 async function addChannel(channelId) {

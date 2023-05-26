@@ -9,9 +9,9 @@ module.exports = {
         const channelId = interaction.channel.id;
         const res = await addChannel(channelId);
 		if(res == 0){
-			await interaction.reply('Channel is already accepted.');
+			await interaction.reply('Channel is already added');
 		}else{
-			await interaction.reply('Channel accepted.');
+			await interaction.reply('Channel added.');
 		}
         
 	},

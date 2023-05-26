@@ -51,8 +51,10 @@ client.on('ready', () => {
 });
 
 client.on('messageCreate', async message => {
-  if (!message.content.match(/(https?:\/\/[^\s]+)/g) && message.attachments.size === 0 || message.author.bot) 
+  if (!message.content.match(/(https?:\/\/[^\s]+)/g) && message.attachments.size === 0 || message.author.bot ||
+  	message.content.includes("png") || message.content.includes("jpg") || message.content.includes("gif")) {
   		return;
+	}
 
   const channelId = message.channel.id;
   const channels = await getChannels();

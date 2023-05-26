@@ -1,10 +1,48 @@
-const fetch = require('node-fetch');
-const FormData = require('form-data');
-const { Discord, EmbedBuilder, Client, GatewayIntentBits, Partials, Message } = require('discord.js');
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.DirectMessages, GatewayIntentBits.MessageContent ], partials: [Partials.Channel] });
-const { token, apiKey } = require('./config.json');
+const { Discord, EmbedBuilder, Client, Collection, Events, GatewayIntentBits, Partials, Message } = require('discord.js');
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.DirectMessages, GatewayIntentBits.MessageContent], partials: [Partials.Channel] });
+const { token } = require('./config.json');
 const analyzeURL = require('./functions/analyzeurl.js');
 const analyzeFile = require('./functions/analyzefile.js');
+const { addChannel, removeChannel, getChannels } = require('./database');
+const fs = require('node:fs');
+const path = require('node:path');
+
+client.commands = new Collection();
+
+const commandsPath = path.join(__dirname, 'commands');
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+	const filePath = path.join(commandsPath, file);
+	const command = require(filePath);
+	if ('data' in command && 'execute' in command) {
+		client.commands.set(command.data.name, command);
+	} else {
+		console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+	}
+}
+
+client.on(Events.InteractionCreate, async interaction => {
+	if (!interaction.isChatInputCommand()) return;
+
+	const command = interaction.client.commands.get(interaction.commandName);
+
+	if (!command) {
+		console.error(`No command matching ${interaction.commandName} was found.`);
+		return;
+	}
+
+	try {
+		await command.execute(interaction);
+	} catch (error) {
+		console.error(error);
+		if (interaction.replied || interaction.deferred) {
+			await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+		} else {
+			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		}
+	}
+});
 
 client.on('ready', () => {
   console.log(`DarkySecurityURL está lista`);
@@ -12,6 +50,13 @@ client.on('ready', () => {
 
 client.on('messageCreate', async message => {
   if (!message.content.match(/(https?:\/\/[^\s]+)/g) && message.attachments.size === 0 || message.author.bot) return;
+
+  const channelId = message.channel.id;
+  const channels = await getChannels();
+
+  if (!channels.some(channel => channel.channel_id === channelId)) {
+    return; // Si el canal no está en la lista de canales permitidos, no analizar
+  }
 
   const urls = message.content.match(/(https?:\/\/[^\s]+)/g) || [];
   const attachments = Array.from(message.attachments.values());
@@ -29,5 +74,7 @@ client.on('messageCreate', async message => {
     await analyzeFile(file, message);
   }
 });
+
+
 
 client.login(token);

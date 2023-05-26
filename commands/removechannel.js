@@ -6,7 +6,12 @@ module.exports = {
 		.setName('removechannel')
 		.setDescription('Remove the channel to analyze'),
 	async execute(interaction) {
-        await removeChannel(interaction.channel.id);
-        await interaction.reply('Channel remove');
+        const res = await removeChannel(interaction.channel.id);
+		if(res == 0){
+			await interaction.reply('Channel is already removed');
+		}else{
+			await interaction.reply('Channel removed');
+		}
+        
 	},
 };

@@ -4,6 +4,7 @@ const { clientId, guildId, token } = require('./config.json');
 const analyzeURL = require('./functions/analyzeurl.js');
 const analyzeFile = require('./functions/analyzefile.js');
 const { addChannel, removeChannel, getChannels } = require('./database');
+const fetch = require('node-fetch');
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -45,11 +46,13 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 client.on('ready', () => {
-  console.log(`DarkySecurityURL está lista`);
+  console.log(`DarkySecurityURL is ready`);
+  client.user.setPresence({ activities: [{ name: 'Searching for malware' }], status: 'dnd' });
 });
 
 client.on('messageCreate', async message => {
-  if (!message.content.match(/(https?:\/\/[^\s]+)/g) && message.attachments.size === 0 || message.author.bot) return;
+  if (!message.content.match(/(https?:\/\/[^\s]+)/g) && message.attachments.size === 0 || message.author.bot) 
+  		return;
 
   const channelId = message.channel.id;
   const channels = await getChannels();

@@ -7,7 +7,12 @@ module.exports = {
 		.setDescription('Adds the channel to analyze'),
 	async execute(interaction) {
         const channelId = interaction.channel.id;
-        await addChannel(channelId);
-        await interaction.reply('Channel accepted.');
+        const res = await addChannel(channelId);
+		if(res == 0){
+			await interaction.reply('Channel is already accepted.');
+		}else{
+			await interaction.reply('Channel accepted.');
+		}
+        
 	},
 };

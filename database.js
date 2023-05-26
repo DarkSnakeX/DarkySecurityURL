@@ -17,21 +17,37 @@ async function createTable() {
 
 createTable()
   .then(() => {
-    console.log('Table "channels" created');
+    console.log('Table "channels" is loaded');
   })
   .catch(error => {
     console.error('Error creating table "channels"', error);
   });
 
-async function addChannel(channelId) {
-  const db = await dbPromise;
-  await db.run('INSERT INTO channels (channel_id) VALUES (?)', channelId);
-}
+  async function addChannel(channelId) {
+    const db = await dbPromise;
+    
+    const existingChannel = await db.get('SELECT * FROM channels WHERE channel_id = ?', channelId);
+    if (existingChannel) {
+      return 0;
+    }
+    
+    await db.run('INSERT INTO channels (channel_id) VALUES (?)', channelId);
+    return 1;
+  }
+  
 
-async function removeChannel(channelId) {
-  const db = await dbPromise;
-  await db.run('DELETE FROM channels WHERE channel_id = ?', channelId);
-}
+  async function removeChannel(channelId) {
+    const db = await dbPromise;
+  
+    const existingChannel = await db.get('SELECT * FROM channels WHERE channel_id = ?', channelId);
+    if (!existingChannel) {
+      return 0;
+    }
+  
+    await db.run('DELETE FROM channels WHERE channel_id = ?', channelId);
+    return 1;
+  }
+  
 
 async function getChannels() {
   const db = await dbPromise;

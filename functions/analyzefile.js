@@ -44,7 +44,7 @@ async function getScanResult(resource) {
   scanResult = await scanResult.json();
 
   if (scanResult.response_code === 0) {
-    await new Promise(resolve => setTimeout(resolve, 5000));
+    await new Promise(resolve => setTimeout(resolve, 60000));
     return getScanResult(resource);
   }
 

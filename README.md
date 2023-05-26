@@ -1,5 +1,5 @@
 # DarkySecurityURL
-A discord bot that uses the VirusTotal API to check if links might be malicious or not.
+A discord bot that uses the VirusTotal API to check if links and files might be malicious or not.
 
 # Description
 This bot analyzes all the messages that users send and when it finds a link it analyzes it using

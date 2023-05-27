@@ -8,7 +8,7 @@ module.exports = {
 		.setDescription('Remove the channel to analyze'),
 	async execute(interaction) {
 		if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-			await interaction.reply('No tienes permisos de administrador para ejecutar este comando.');
+			await interaction.reply('You dont have administrator permissions to do this.');
 			return;
 		}
         const res = await removeChannel(interaction.channel.id);

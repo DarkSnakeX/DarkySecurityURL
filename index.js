@@ -46,7 +46,7 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 client.on('ready', () => {
-  console.log(`DarkySecurityURL is ready`);
+  console.log(`DarkyBotSecurity is ready`);
   client.user.setPresence({ activities: [{ name: 'Searching for malware' }], status: 'dnd' });
 });
 

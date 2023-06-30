@@ -14,6 +14,7 @@ For the bot to analyze the uploaded files and urls go to the channel you want th
 - Have a valid Virustotal API.
 - Have a valid Discord token to create bots.
 - Install the dependency of node-fetch(2.6.1), discord.js, form-data and sqlite3.
+  +(npm install node-fetch@2.6.1 discord.js form-data sqlite3)
 
 # Warning
 This bot is purely educational to teach about cybersecurity on discord and the use of the Virustotal API in Javascript.

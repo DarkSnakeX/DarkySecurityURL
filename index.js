@@ -24,6 +24,8 @@ for (const file of commandFiles) {
 }
 
 client.on(Events.InteractionCreate, async interaction => {
+
+
 	if (!interaction.isChatInputCommand()) return;
 
 	const command = interaction.client.commands.get(interaction.commandName);
@@ -43,6 +45,13 @@ client.on(Events.InteractionCreate, async interaction => {
 			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 		}
 	}
+
+	fs.appendFile('log.txt', `${interaction.user.username} : "/${interaction.commandName}" with arguments "${JSON.stringify(interaction.options)}" in ${interaction.channel.name} on ${new Date().toLocaleString()}\n`, err => {
+		if (err) {
+		  console.error(err);
+		}
+	  });
+
 });
 
 client.on('ready', () => {
@@ -56,12 +65,19 @@ client.on('messageCreate', async message => {
   		return;
 	}
 
+
   const channelId = message.channel.id;
   const channels = await getChannels();
 
   if (!channels.some(channel => channel.channel_id === channelId)) {
     return;
   }
+
+  fs.appendFile('log.txt', `${message.author.username} : "${message.content}" in ${message.channel.name} on ${new Date().toLocaleString()}\n`, err => {
+	if (err) {
+	  console.error(err);
+	}
+  });
 
   const urls = message.content.match(/(https?:\/\/[^\s]+)/g) || [];
   const attachments = Array.from(message.attachments.values());
